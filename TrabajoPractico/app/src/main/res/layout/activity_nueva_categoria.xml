@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cat_crear"
-                android:background="@color/colorBotones"
+                android:background="@drawable/content_area_chico"
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
                 android:id="@+id/btnCrearCategoria"/>

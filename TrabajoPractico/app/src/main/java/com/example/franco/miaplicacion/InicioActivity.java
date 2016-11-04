@@ -1,7 +1,9 @@
 package com.example.franco.miaplicacion;
 
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 
 public class InicioActivity extends AppCompatActivity {
     static Usuario usuario;
@@ -28,7 +30,8 @@ public class InicioActivity extends AppCompatActivity {
     }
 
     public void  ingreseUsuario (MiDialogo dialogo){
-        dialogo.show(getSupportFragmentManager(),"dialogo");
+        dialogo.show(getSupportFragmentManager(), "dialogo");
     }
+
 
 }

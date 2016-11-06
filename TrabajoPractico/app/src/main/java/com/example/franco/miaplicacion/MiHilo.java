@@ -73,6 +73,26 @@ public class MiHilo extends Thread {
                 miHandler.sendMessage(msg);
             }
 
+            if (accion == ControladorNuevaCategoria.CREARCATEGORIA){
+                byte[] informacion=miConexion.enviarInformacion("http://lkdml.myq-see.com/categorias",params,"POST",InicioActivity.apiKey);
+                String info = new String (informacion);
+                JSONObject jason = new JSONObject(info);
+                error = jason.getString("error");
+                respuesta=jason.getString("message");
+                Message msg = new Message();
+                if("false".equals(error)){
+                    byte[] informacion1=miConexion.enviarInformacion("http://lkdml.myq-see.com/categorias",null,"GET",InicioActivity.apiKey);
+                    String info1 = new String (informacion1);
+                    List<Categoria> categorias = Categoria.obtenerListaPersonaByJason(info1);
+                    msg.arg1 = ControladorNuevaCategoria.CREARCATEGORIA;
+                    msg.obj = categorias;
+                    miHandler.sendMessage(msg);
+                }else {
+                   Log.d("Respuesta:",info);
+                }
+
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }catch (JSONException e1){

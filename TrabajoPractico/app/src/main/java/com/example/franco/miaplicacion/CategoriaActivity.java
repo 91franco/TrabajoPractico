@@ -40,7 +40,9 @@ public class CategoriaActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    // MENU de acciones VER
+
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mimenu, menu);
         return true;
@@ -68,4 +70,5 @@ public class CategoriaActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    */
 }

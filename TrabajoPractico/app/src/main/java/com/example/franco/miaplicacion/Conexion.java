@@ -22,6 +22,9 @@ public class Conexion  {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod(pedido);
+        if (apiKey!=null){
+            urlConnection.setRequestProperty("AUTHORIZATION", apiKey);
+        }
         if(pedido.equals("POST")) {
             urlConnection.setDoOutput(true);
             if(!(postParams==null)) {
@@ -34,12 +37,9 @@ public class Conexion  {
                 writer.close();
                 os.close();
             }
-        }else{
-            urlConnection.setRequestProperty("AUTHORIZATION", apiKey);
         }
 
         int response = urlConnection.getResponseCode();
-        Log.d("response",""+response);
         if(response==200 || response==201) {
             InputStream is = urlConnection.getInputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -52,10 +52,7 @@ public class Conexion  {
             return baos.toByteArray();
         }
         else
-
             throw new IOException();
-
-
     }
 
 }

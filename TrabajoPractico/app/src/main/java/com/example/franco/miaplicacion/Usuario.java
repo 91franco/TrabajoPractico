@@ -59,10 +59,6 @@ public class Usuario {
         return this.contraseña;
     }
 
-    static Usuario recuperarUsuario(){
-        Usuario usuario = InicioActivity.usuario;
-        return usuario;
-    }
 
 
 }

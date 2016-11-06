@@ -11,6 +11,7 @@
     <string name="re_subtitulo">Formulario de registro</string>
     <string name="re_nombre">Ingrese Nombre</string>
     <string name="re_apellido">Ingrese Apellido</string>
+    <string name="re_email">Ingrese Email</string>
     <string name="re_clave">Ingresa una Clave</string>
     <string name="re_rClave">Reingresá la Clave</string>
     <string name="cat_titulo">Nueva Categoria!</string>

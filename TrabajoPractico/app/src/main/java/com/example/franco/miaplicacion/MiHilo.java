@@ -18,10 +18,15 @@ public class MiHilo extends Thread {
     Handler miHandler;
     Conexion miConexion;
     int accion;
-    int event;
-    public MiHilo(Handler handler, int i){
-        miHandler=handler;
-        accion=i;
+    String error;
+    String respuesta;
+    Uri.Builder params;
+
+
+    public MiHilo(Handler handler, int i,Uri.Builder params ){
+        this.miHandler=handler;
+        this.accion=i;
+        this.params =params;
 
     }
 
@@ -29,24 +34,45 @@ public class MiHilo extends Thread {
     public void run (){
 
         try {
-            Uri.Builder params = new Uri.Builder();
-            params.appendQueryParameter("email","franco@gmail.com");
-            params.appendQueryParameter("password", "franco123");
 
-            Conexion miConexion= new Conexion();
-            byte[] informacion=miConexion.enviarInformacion("http://lkdml.myq-see.com/login",params,"POST",null);
+            miConexion= new Conexion();
+            if (accion == ControladorInicio.LOGIN){
+                byte[] informacion=miConexion.enviarInformacion("http://lkdml.myq-see.com/login",params,"POST",null);
+                String info = new String (informacion);
+                JSONObject jason = new JSONObject(info);
+                error = jason.getString("error");
+                if("false".equals(error)){
+                    InicioActivity.apiKey = jason.getString("apiKey");
+                    byte[] informacion1=miConexion.enviarInformacion("http://lkdml.myq-see.com/categorias",null,"GET",InicioActivity.apiKey);
+                    String info2 = new String (informacion1);
+                    List<Categoria> categorias = Categoria.obtenerListaPersonaByJason(info2);
+                    Message msg = new Message();
+                    msg.arg1 = ControladorInicio.LOGIN;
+                    msg.obj = categorias;
+                    miHandler.sendMessage(msg);
+                }else {
+                    String mensaje = jason.getString("message");
+                    Log.d("respuesta:", mensaje);
+                }
+            }
 
+            if (accion == ControladorRegistrarse.REGISTRARSE){
+                byte[] informacion=miConexion.enviarInformacion("http://lkdml.myq-see.com/register",params,"POST",null);
+                String info = new String (informacion);
+                JSONObject jason = new JSONObject(info);
+                error = jason.getString("error");
+                respuesta=jason.getString("message");
+                Message msg = new Message();
+                if("false".equals(error)){
+                    msg.arg1 = ControladorRegistrarse.REGISTRARSE_OK;
+                    msg.obj = respuesta;
+                }else {
+                    msg.arg1 = ControladorRegistrarse.REGISTRARSE_NOK;
+                    msg.obj = respuesta;
+                }
+                miHandler.sendMessage(msg);
+            }
 
-            // Para obtener el listado de categorias
-            // /byte[] informacion=miConexion.obtenerInformacion("http://lkdml.myq-see.com/categorias","5cd87a6c8bd6c2fbaea3919c7671fbb2");
-            String ds = new String (informacion);
-            Log.d("respuesta:", ds);
-
-            JSONObject jason = new JSONObject(ds);
-            String key = jason.getString("apiKey");
-            Log.d("dato:", key);
-
-            //miView.setText("Ingresando al hilo");
         } catch (IOException e) {
             e.printStackTrace();
         }catch (JSONException e1){

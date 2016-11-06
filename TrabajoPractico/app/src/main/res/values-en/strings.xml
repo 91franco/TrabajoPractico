@@ -11,6 +11,7 @@
     <string name="re_subtitulo">Registration Form</string>
     <string name="re_nombre">Enter Name</string>
     <string name="re_apellido">Enter Last Name</string>
+    <string name="re_email">Enter Email</string>
     <string name="re_clave">Enter Password</string>
     <string name="re_rClave">Re-enter Password</string>
     <string name="cat_titulo">New Category!</string>

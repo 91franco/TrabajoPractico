@@ -18,53 +18,29 @@ import java.net.URL;
 
 public class Conexion  {
 
-    public byte [] obtenerInformacion (String urlString, String apiKey) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestMethod("GET");
-        urlConnection.setRequestProperty("AUTHORIZATION", apiKey);
-        urlConnection.connect();
-
-        int response = urlConnection.getResponseCode();
-        Log.d("Http", "Response code: " + response);
-        if(response==200){
-            InputStream is = urlConnection.getInputStream();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte [] buffer = new byte[1024];
-            int length = 0;
-            while ((length = is.read(buffer)) != -1){
-                baos.write(buffer,0,length);
-            }
-            is.close();
-            return baos.toByteArray();
-        }
-        else
-            throw new IOException();
-    }
-
     public byte [] enviarInformacion (String urlString,Uri.Builder postParams,String pedido,String apiKey) throws  IOException {
         URL url = new URL(urlString);
-        Log.d("url", urlString);
-        Log.d("post",postParams.toString());
-        Log.d("metodo", pedido);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod(pedido);
-        urlConnection.setRequestProperty("AUTHORIZATION", apiKey);
-        urlConnection.setDoOutput(true);
-
-
-        String query = postParams.build().getEncodedQuery();
-        OutputStream os = urlConnection.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(new
-                OutputStreamWriter(os,"UTF-8"));
-        writer.write(query);
-        writer.flush();
-        writer.close();
-        os.close();
+        if(pedido.equals("POST")) {
+            urlConnection.setDoOutput(true);
+            if(!(postParams==null)) {
+                String query = postParams.build().getEncodedQuery();
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new
+                        OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+            }
+        }else{
+            urlConnection.setRequestProperty("AUTHORIZATION", apiKey);
+        }
 
         int response = urlConnection.getResponseCode();
         Log.d("response",""+response);
-        if(response==200) {
+        if(response==200 || response==201) {
             InputStream is = urlConnection.getInputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte [] buffer = new byte[1024];

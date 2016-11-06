@@ -26,4 +26,6 @@ public class VistaCategoria {
         Intent i = new Intent(activity,NuevaCategoriaActivity.class);
         activity.startActivity(i);
     }
+
+
 }

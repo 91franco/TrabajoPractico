@@ -2,6 +2,7 @@ package com.example.franco.miaplicacion;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -16,6 +17,7 @@ public class VistaRegistrarse {
     private EditText editUsuario;
     private EditText editContraseña;
     private EditText editReContraseña;
+    private EditText editEmail;
 
 
     public VistaRegistrarse(Activity ac, ControladorRegistrarse controlador) {
@@ -27,16 +29,42 @@ public class VistaRegistrarse {
             this.editNombre = (EditText) activity.findViewById(R.id.editRNombre);
             this.editApellido = (EditText) activity.findViewById(R.id.editRApellido);
             this.editUsuario = (EditText) activity.findViewById(R.id.editRUsuarioEmail);
+            this.editEmail = (EditText) activity.findViewById(R.id.editREmail);
             this.editContraseña = (EditText) activity.findViewById(R.id.editRClave);
             this.editReContraseña = (EditText) activity.findViewById(R.id.editRReinClave);
         }
     }
 
-    public void datosRegistro(){
-        InicioActivity.usuario = new Usuario(this.editNombre.getText().toString(),this.editApellido.getText().toString(),
-                this.editUsuario.getText().toString(),this.editContraseña.getText().toString());
+    public void iniciarLogin(){
         Intent i = new Intent(activity,InicioActivity.class);
         activity.startActivity(i);
+    }
+
+    public boolean validaVacio(){
+        if (editNombre.getText().toString().equals("") || editApellido.getText().toString().equals("") ||
+            editUsuario.getText().toString().equals("") || editContraseña.getText().toString().equals("") ||
+            editReContraseña.getText().toString().equals("") || editEmail.getText().toString().equals("")){
+            return false;
+        }else
+            return true;
+    }
+
+    public boolean validaContraseñas(){
+        if(editContraseña.getText().toString().equals(editReContraseña.getText().toString())){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public Uri.Builder cargarParametros(){
+        Uri.Builder params = new Uri.Builder();
+        params.appendQueryParameter("nombre",editNombre.getText().toString());
+        params.appendQueryParameter("apellido",editApellido.getText().toString());
+        params.appendQueryParameter("usuario",editUsuario.getText().toString());
+        params.appendQueryParameter("email",editEmail.getText().toString());
+        params.appendQueryParameter("password",editApellido.getText().toString());
+        return  params;
     }
 
 }
